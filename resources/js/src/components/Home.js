@@ -10,6 +10,10 @@ const Home = () => {
     textAlign: 'center'
   };
 
+  const margin_left = {
+    marginLeft: '3px'
+  }
+
   const [posts, setPosts] = useState(null);
 
   const fetchPosts = () => {
@@ -129,6 +133,9 @@ const Home = () => {
     >
       {/* children components */}
       <Link to="/add" className="btn btn-primary">Add New Post</Link>
+      
+      <Link to="/material_ui" className="btn btn-primary" style={margin_left}>Material UI Test</Link>
+
       <div className="table-responsive mt-4">
         <table className="table table-striped">
           <thead style={center_text}>
