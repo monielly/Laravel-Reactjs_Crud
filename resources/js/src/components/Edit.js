@@ -20,30 +20,53 @@ const Edit = () => {
     })
   }
 
-  const onEditSubmit = async () => {
+  const onEditSubmit = () => {
     setLoading(true);
-    try{
-      await api.updatePost({
-        title, description
-      }, id).then(res => {
-        const result = res.data;
-        console.log('Controller response', result);
-      })
-    }catch{
-      console.log("Failed to update Post!")
-    }finally{
+    swal({
+      title: "Are you sure?",
+      text: "Once updated, changes will be applied with the data!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then( async (willDelete) => {
+      if (willDelete) {
+        try{
+          await api.updatePost({
+            title, description
+          }, id).then(res => {
+            const result = res.data;
+            console.log('Controller response', result);
+          })
+        }catch{
+          console.log("Failed to update Post!")
+        }finally{
+    
+          swal({
+            title: "Status: 200",
+            text: "You have successfully updated the Post!",
+            icon: "success",
+            timer: 2000,
+            button: false
+          })
+    
+          setLoading(false);
+          history.push('/');
+        }
+        
+        swal("Success! The data you selected has been updated!", {
+          icon: "success",
+        });
+      } else {
+        swal("You have aborted to update the data!", {
+          icon: "info",
+          title: "Yiiiikkkeeesss!"
+        });
 
-      swal({
-        title: "Status: 200",
-        text: "You have successfully updated the Post!",
-        icon: "success",
-        timer: 2000,
-        button: false
-      })
-
-      setLoading(false);
-      history.push('/');
-    }
+        setLoading(false);
+        history.push('/');
+      }
+    });
   };
 
   useEffect(() => {

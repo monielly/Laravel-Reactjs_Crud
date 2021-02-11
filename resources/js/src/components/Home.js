@@ -78,25 +78,41 @@ const Home = () => {
             type="button"
             className="btn btn-danger"
             onClick={() => {
-              api.deletePost(post.id)
-              .then(res => {
-                const result = res.data;
-                console.log('Controller response', result);
-              })
-              .catch(err => {
-                console.log('Failed to delete with id :' + post.id + err);
-              });
-
               swal({
-                title: "Status: 200",
-                text: "You have successfully updated the Post!",
-                icon: "success",
-                timer: 2000,
-                button: false
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this data!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
               })
-              
-              // calling the fetchPosts method to refresh page
-              fetchPosts();
+              .then((willDelete) => {
+                if (willDelete) {
+                  api.deletePost(post.id)
+                  .then(res => {
+                    const result = res.data;
+                    console.log('Controller response', result);
+                  })
+                  .catch(err => {
+                    console.log('Failed to delete with id :' + post.id + err);
+                  });
+
+                   // calling the fetchPosts method to refresh page
+                   fetchPosts();
+
+                  swal("Success! The data has been successfully deleted.", {
+                    icon: "success",
+                  });
+                } else {
+
+                  // calling the fetchPosts method to refresh page
+                  fetchPosts();
+
+                  swal("You have aborted the deletion of the data!", {
+                    icon: "info",
+                    title: "Yiiiikkkeeesss!"
+                  });
+                }
+              });
             }}
           >
             DELETE

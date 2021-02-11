@@ -71332,57 +71332,85 @@ var Edit = function Edit() {
     });
   };
 
-  var onEditSubmit = /*#__PURE__*/function () {
-    var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              setLoading(true);
-              _context.prev = 1;
-              _context.next = 4;
-              return _api__WEBPACK_IMPORTED_MODULE_4__["default"].updatePost({
-                title: title,
-                description: description
-              }, id).then(function (res) {
-                var result = res.data;
-                console.log('Controller response', result);
-              });
+  var onEditSubmit = function onEditSubmit() {
+    setLoading(true);
+    sweetalert__WEBPACK_IMPORTED_MODULE_5___default()({
+      title: "Are you sure?",
+      text: "Once updated, changes will be applied with the data!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true
+    }).then( /*#__PURE__*/function () {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(willDelete) {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!willDelete) {
+                  _context.next = 17;
+                  break;
+                }
 
-            case 4:
-              _context.next = 9;
-              break;
+                _context.prev = 1;
+                _context.next = 4;
+                return _api__WEBPACK_IMPORTED_MODULE_4__["default"].updatePost({
+                  title: title,
+                  description: description
+                }, id).then(function (res) {
+                  var result = res.data;
+                  console.log('Controller response', result);
+                });
 
-            case 6:
-              _context.prev = 6;
-              _context.t0 = _context["catch"](1);
-              console.log("Failed to update Post!");
+              case 4:
+                _context.next = 9;
+                break;
 
-            case 9:
-              _context.prev = 9;
-              sweetalert__WEBPACK_IMPORTED_MODULE_5___default()({
-                title: "Status: 200",
-                text: "You have successfully updated the Post!",
-                icon: "success",
-                timer: 2000,
-                button: false
-              });
-              setLoading(false);
-              history.push('/');
-              return _context.finish(9);
+              case 6:
+                _context.prev = 6;
+                _context.t0 = _context["catch"](1);
+                console.log("Failed to update Post!");
 
-            case 14:
-            case "end":
-              return _context.stop();
+              case 9:
+                _context.prev = 9;
+                sweetalert__WEBPACK_IMPORTED_MODULE_5___default()({
+                  title: "Status: 200",
+                  text: "You have successfully updated the Post!",
+                  icon: "success",
+                  timer: 2000,
+                  button: false
+                });
+                setLoading(false);
+                history.push('/');
+                return _context.finish(9);
+
+              case 14:
+                sweetalert__WEBPACK_IMPORTED_MODULE_5___default()("Success! The data you selected has been updated!", {
+                  icon: "success"
+                });
+                _context.next = 20;
+                break;
+
+              case 17:
+                sweetalert__WEBPACK_IMPORTED_MODULE_5___default()("You have aborted to update the data!", {
+                  icon: "info",
+                  title: "Yiiiikkkeeesss!"
+                });
+                setLoading(false);
+                history.push('/');
+
+              case 20:
+              case "end":
+                return _context.stop();
+            }
           }
-        }
-      }, _callee, null, [[1, 6, 9, 14]]);
-    }));
+        }, _callee, null, [[1, 6, 9, 14]]);
+      }));
 
-    return function onEditSubmit() {
-      return _ref.apply(this, arguments);
-    };
-  }();
+      return function (_x) {
+        return _ref.apply(this, arguments);
+      };
+    }());
+  };
 
   Object(react__WEBPACK_IMPORTED_MODULE_1__["useEffect"])(function () {
     getOnePost();
@@ -71519,21 +71547,34 @@ var Home = function Home() {
         type: "button",
         className: "btn btn-danger",
         onClick: function onClick() {
-          _api__WEBPACK_IMPORTED_MODULE_3__["default"].deletePost(post.id).then(function (res) {
-            var result = res.data;
-            console.log('Controller response', result);
-          })["catch"](function (err) {
-            console.log('Failed to delete with id :' + post.id + err);
-          });
           sweetalert__WEBPACK_IMPORTED_MODULE_4___default()({
-            title: "Status: 200",
-            text: "You have successfully updated the Post!",
-            icon: "success",
-            timer: 2000,
-            button: false
-          }); // calling the fetchPosts method to refresh page
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover this data!",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true
+          }).then(function (willDelete) {
+            if (willDelete) {
+              _api__WEBPACK_IMPORTED_MODULE_3__["default"].deletePost(post.id).then(function (res) {
+                var result = res.data;
+                console.log('Controller response', result);
+              })["catch"](function (err) {
+                console.log('Failed to delete with id :' + post.id + err);
+              }); // calling the fetchPosts method to refresh page
 
-          fetchPosts();
+              fetchPosts();
+              sweetalert__WEBPACK_IMPORTED_MODULE_4___default()("Success! The data has been successfully deleted.", {
+                icon: "success"
+              });
+            } else {
+              // calling the fetchPosts method to refresh page
+              fetchPosts();
+              sweetalert__WEBPACK_IMPORTED_MODULE_4___default()("You have aborted the deletion of the data!", {
+                icon: "info",
+                title: "Yiiiikkkeeesss!"
+              });
+            }
+          });
         }
       }, "DELETE")));
     });
