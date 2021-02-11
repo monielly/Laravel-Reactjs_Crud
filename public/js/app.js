@@ -71580,8 +71580,8 @@ var Home = function Home() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /var/www/html/Laravel-ReactJs-CRUD/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /var/www/html/Laravel-ReactJs-CRUD/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /var/www/html/laravel-reactjs_crud/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /var/www/html/laravel-reactjs_crud/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
