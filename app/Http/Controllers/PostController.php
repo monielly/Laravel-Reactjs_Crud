@@ -129,4 +129,25 @@ class PostController extends Controller
             'test' => $test
         ]);
     }
+
+    public function submit(Request $request){
+
+        $title = $request->title;
+        $description = $request->description;
+
+				$fields = [$title, $description];
+
+        $post = new Post([
+					'title' => $title,
+					'description' => $description
+				]);
+				$post->save();
+
+        return response()->json([
+            'response' => 'Post Saved!',
+						'post fields' => $fields,
+						'post db' => $post
+        ]);
+
+    }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
@@ -17,10 +17,15 @@ import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import KeyboardCapslockIcon from '@material-ui/icons/KeyboardCapslock';
 import PropTypes from 'prop-types';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Box from '@material-ui/core/Box';
-import { Link } from 'react-router-dom';
+import TextField from '@material-ui/core/TextField';
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+import Button from '@material-ui/core/Button';
+import swal from 'sweetalert';
+import { Paper } from '@material-ui/core';
+import { Link, useHistory } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -99,7 +104,11 @@ const useStyles = makeStyles((theme) => ({
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
-  }
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1)
+  },
 }));
 
 const custStyles = {
@@ -122,6 +131,10 @@ const custStyles = {
   },
   nav_title: {
     color: '#ff1746'
+  },
+  textfield: {
+    margin: 8,
+    width: '400px'
   }
 };
 
@@ -158,19 +171,12 @@ function a11yProps(index) {
   };
 }
 
-
 export default function MiniDrawer() {
   const classes = useStyles();
   const theme = useTheme();
   const cust = custStyles;
   //Sets Hamburger-menu to Open true or false
   const [open, setOpen] = React.useState(false);
-
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -180,6 +186,37 @@ export default function MiniDrawer() {
     setOpen(false);
   };
   
+
+  //FORM FIELDS
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+
+  const fields = {
+    title: title,
+    description: description
+  }
+
+  const history = useHistory();
+
+  const onSubmit = () => {
+
+    axios.post('http://127.0.0.1:8000/api/submit', fields)
+         .then(res =>{
+           const result = res;
+           console.log(result.data);
+
+           swal({
+            title: "Status: 200",
+            text: "You have successfully added new Post!",
+            icon: "success",
+            timer: 2000,
+            button: false
+           })
+           
+           history.push('/');
+         })
+  }
+
 
   return (
     <div className={classes.root}>
@@ -223,8 +260,8 @@ export default function MiniDrawer() {
         }}
       >
         <div className={classes.toolbar}>
-          <h2><span style={{ color: '#00aaff' }}>M</span>
-              <span style={{ color: '#ff0000', marginRight: '45px' }}>W</span>
+          <h2><span style={{ color: '#00aaff' }}>L</span>
+              <span style={{ color: '#ff0000', marginRight: '45px' }}>R</span>
           </h2>
           <IconButton style={cust.white} onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? '' : <ChevronLeftIcon />}
@@ -315,29 +352,39 @@ export default function MiniDrawer() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-          facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-          gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-          donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-          Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-          imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-          arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-          donec massa sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-          facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-          tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-          consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-          vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-          hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-          tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-          nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-          accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <Paper style={{ padding: 16, backgroundColor: '#f5f5f5', color: '#ffffff', textAlign: 'center'}}>
+          <Container >
+            <Row>
+              <Col>
+                <TextField
+                  label="Title"
+                  style={{ margin: 8 }}
+                  fullWidth
+                  margin="normal"
+                  onChange={event => setTitle(event.target.value)}
+                />
+                <TextField
+                  label="Description"
+                  style={{ margin: 8 }}
+                  fullWidth
+                  margin="normal"
+                  onChange={event => setDescription(event.target.value)}
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Button 
+                  variant="contained"
+                  color="primary"
+                  onClick={onSubmit}
+                >
+                    Test
+                </Button>
+              </Col>
+            </Row>
+          </Container>
+        </Paper>
       </main>
     </div>
   );

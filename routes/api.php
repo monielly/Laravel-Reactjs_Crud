@@ -18,6 +18,8 @@ Route::resource('posts', 'PostController');
 
 Route::get('test', 'PostController@test');
 
+Route::post('submit', 'PostController@submit');
+
 
 // Route::resources([
 //   'photos' => PhotoController::class,

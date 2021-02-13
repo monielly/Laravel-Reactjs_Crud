@@ -17,4 +17,7 @@ export default {
 
   testPost: () =>
     axios.get(`${BASE_API_URL}/test`),
+
+  submitPost: () =>
+    axios.post(`${BASE_API_URL}/submit`),
 }
