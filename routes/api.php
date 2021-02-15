@@ -25,3 +25,7 @@ Route::post('submit', 'PostController@submit');
 //   'photos' => PhotoController::class,
 //   'posts' => PostController::class,
 // ]);
+
+// Route::prefix('/parent_route')->group( function() {
+//   Route::post('/child_route', 'NameofController@controller_function');
+// });

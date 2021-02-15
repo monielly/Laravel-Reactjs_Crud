@@ -200,6 +200,7 @@ export default function MiniDrawer() {
 
   const onSubmit = () => {
 
+    // axios.post('api/submit', fields)    <<<--- another way to access api {api.php + Route name}
     axios.post('http://127.0.0.1:8000/api/submit', fields)
          .then(res =>{
            const result = res;
@@ -260,9 +261,9 @@ export default function MiniDrawer() {
         }}
       >
         <div className={classes.toolbar}>
-          <h2><span style={{ color: '#00aaff' }}>L</span>
+          {/* <h2><span style={{ color: '#00aaff' }}>L</span>
               <span style={{ color: '#ff0000', marginRight: '45px' }}>R</span>
-          </h2>
+          </h2> */}
           <IconButton style={cust.white} onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? '' : <ChevronLeftIcon />}
           </IconButton>
