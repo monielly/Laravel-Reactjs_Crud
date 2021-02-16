@@ -28,6 +28,7 @@ import { Paper } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 
 const drawerWidth = 240;
+const conslog = console.log;
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -200,22 +201,36 @@ export default function MiniDrawer() {
 
   const onSubmit = () => {
 
-    // axios.post('api/submit', fields)    <<<--- another way to access api {api.php + Route name}
-    axios.post('http://127.0.0.1:8000/api/submit', fields)
-         .then(res =>{
-           const result = res;
-           console.log(result.data);
+    if(title != '' || description != ''){
 
-           swal({
-            title: "Status: 200",
-            text: "You have successfully added new Post!",
-            icon: "success",
-            timer: 2000,
-            button: false
-           })
-           
-           history.push('/');
-         })
+      // axios.post('api/submit', fields)    <<<--- another way to access api {api.php + Route name}
+      axios.post('http://127.0.0.1:8000/api/submit', fields)
+      .then(res =>{
+        const result = res;
+        console.log(result.data);
+
+        swal({
+        title: "Status: 200",
+        text: "You have successfully added new Post!",
+        icon: "success",
+        timer: 2000,
+        button: false
+        })
+        
+        history.push('/');
+      })
+    }else{
+      swal({
+        title: "Status: 500",
+        text: "Empty fields, please complete the form!",
+        icon: "error",
+        timer: 2000,
+        button: true
+        })
+
+        conslog('Error Adding new data.')
+    }
+    
   }
 
 
@@ -264,7 +279,7 @@ export default function MiniDrawer() {
           {/* <h2><span style={{ color: '#00aaff' }}>L</span>
               <span style={{ color: '#ff0000', marginRight: '45px' }}>R</span>
           </h2> */}
-          <IconButton style={cust.white} onClick={handleDrawerClose}>
+          <IconButton style={{backgroundColor: '#0055ff', color: '#ffffff'}} onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? '' : <ChevronLeftIcon />}
           </IconButton>
         </div>
